@@ -11,7 +11,7 @@
             <div class="title has-text-centered">
             {{formTitle}}
             </div>
-            <form @submit="onSubmitAction">
+            <form @submit.prevent="onSubmitAction">
                 <div class="field">
                     <label class="label">Email</label>
                     <div class="control">
