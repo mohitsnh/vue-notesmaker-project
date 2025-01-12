@@ -15,13 +15,21 @@
                 <div class="field">
                     <label class="label">Email</label>
                     <div class="control">
-                        <input class="input" type="email" v-model='credentials.emailId' placeholder="e.g. alexsmith@gmail.com">
+                        <input v-if="!isRegister" class="input" type="email" v-model='loginCredentials.emailId' placeholder="e.g. alexsmith@gmail.com">
+                        <input v-else class="input" type="email" v-model='registerCredentials.emailId' placeholder="e.g. alexsmith@gmail.com">
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">Password</label>
                     <div class="control">
-                        <input class="input" type="password" v-model='credentials.password' placeholder="Enter a password">
+                        <input v-if="!isRegister" class="input" type="password" v-model='loginCredentials.password' placeholder="Enter a password">
+                        <input v-else class="input" type="password" v-model='registerCredentials.password' placeholder="Enter a password">
+                    </div>
+                </div>
+                <div class="field" v-if="isRegister">
+                    <label class="label">Re-enter Password</label>
+                    <div class="control">
+                        <input class="input" type="password" v-model='registerCredentials.confirmPassword' placeholder="Confirm password">
                     </div>
                 </div>
                 <div class="has-text-right">
@@ -49,26 +57,43 @@ const formTitle = computed(() => {
 const formButtonName = computed(() => {
     return isRegister.value ? 'Register':'Login'
 })
-//credentials
-const credentials = reactive({
+//login credentials
+const loginCredentials = reactive({
     emailId: '',
     password: ''
 })
+//Register credentials
+const registerCredentials = reactive({
+    emailId: '',
+    password: '',
+    confirmPassword: ''
+})
 //submit action
 const onSubmitAction = () => {
-    if(!credentials.emailId || !credentials.password)
+
+    if(isRegister.value)
     {
-        alert("Enter the credentials")
-    }
-    else
-    {
-        if(isRegister.value)
+        if(!registerCredentials.emailId || !registerCredentials.password || !registerCredentials.confirmPassword)
         {
-            storeAuth.registerUser(credentials)
+            alert("Enter the credentials")
+        }
+        else if(registerCredentials.confirmPassword != registerCredentials.password)
+        {
+            alert("Passwords do not match")
         }
         else
         {
-            storeAuth.loginUser(credentials)
+            storeAuth.registerUser(registerCredentials)
+        }
+    }
+    else
+    {   if(!loginCredentials.emailId || !loginCredentials.password)
+        {
+            alert("Enter the login credentials")
+        }
+        else
+        {
+        storeAuth.loginUser(loginCredentials)
         }
     }
 }

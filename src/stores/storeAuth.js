@@ -41,10 +41,11 @@ export const useStoreAuth = defineStore('storeAuth', {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        alert(error.message)
       });
     },
-    loginUser(credentials){
-      signInWithEmailAndPassword(auth, credentials.emailId, credentials.password)
+    async loginUser(credentials){
+      return signInWithEmailAndPassword(auth, credentials.emailId, credentials.password)
         .then((userCredential) => {
           // Signed in 
           const user = userCredential.user
@@ -52,7 +53,7 @@ export const useStoreAuth = defineStore('storeAuth', {
         .catch((error) => {
           const errorCode = error.code
           const errorMessage = error.message
-          console.log("The user does not exist")
+          alert(error.message)
         });
     },
     userLogout(){
@@ -60,6 +61,7 @@ export const useStoreAuth = defineStore('storeAuth', {
 
       }).catch((error) => {
         // An error happened.
+        alert(error.message)
       });
     }
 
